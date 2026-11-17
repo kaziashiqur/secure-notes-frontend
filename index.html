@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secure Notes</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 14px; color: #222; background: #f5f5f5; max-width: 800px; margin: 30px auto; padding: 0 16px; }
+    h1 { font-size: 24px; margin-bottom: 10px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    h3 { font-size: 15px; margin: 20px 0 8px; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 16px; margin: 16px 0; }
+    #adminBox h2 { margin-top: 24px; }
+    #adminBox h2:first-child { margin-top: 0; }
+    input, textarea, select { display: block; box-sizing: border-box; width: 100%; max-width: 400px; margin: 0 0 8px; padding: 6px 8px; font: inherit; border: 1px solid #bbb; border-radius: 3px; }
+    textarea { height: 60px; resize: vertical; }
+    button { padding: 5px 12px; font: inherit; background: #eee; border: 1px solid #aaa; border-radius: 3px; cursor: pointer; }
+    button:hover { background: #ddd; }
+    .item { padding: 8px 0; border-bottom: 1px solid #eee; }
+    .item button { font-size: 12px; padding: 2px 8px; margin-left: 6px; }
+    #notes, #users { margin: 12px 0; }
+    .hidden { display: none; }
+    #msg { color: #b00; min-height: 18px; margin: 0; }
+    .author { color: #0645ad; text-decoration: underline; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Secure Notes</h1>
+  <p id="msg"></p>
+
+  <section id="authBox">
+    <h2>Login</h2>
+    <input id="loginEmail" placeholder="email" value="alice@test.com" />
+    <input id="loginPassword" type="password" placeholder="password" value="alice123" />
+    <button onclick="login()">Login</button>
+    <h2>Register</h2>
+    <input id="regName" placeholder="name" />
+    <input id="regEmail" placeholder="email" />
+    <input id="regPassword" type="password" placeholder="password (min 6)" />
+    <input id="regInterests" placeholder="interests, comma separated" />
+    <button onclick="register()">Register</button>
+  </section>
+
+  <div id="appBox" class="hidden">
+    <p>Logged in as <b id="me"></b> <button onclick="logout()">Logout</button></p>
+
+    <section>
+      <h2>My Notes</h2>
+      <input id="noteId" type="hidden" />
+      <input id="noteTitle" placeholder="title" />
+      <textarea id="noteContent" placeholder="content"></textarea>
+      <button onclick="saveNote()">Save note</button> <button onclick="clearNote()">Clear</button>
+      <div id="notes"></div>
+      <button onclick="notesPage--; loadNotes()">Prev</button> <span id="notesInfo"></span>
+      <button onclick="notesPage++; loadNotes()">Next</button>
+    </section>
+
+    <section>
+      <h2>Posts (public)</h2>
+      <input id="postTitle" placeholder="title" />
+      <textarea id="postBody" placeholder="body"></textarea>
+      <button onclick="createPost()">Create post</button>
+      <div id="posts"></div>
+      <h3>Posts of a user ($lookup)</h3>
+      <p>Click an author name above to see all their posts.</p>
+      <div id="userPosts"></div>
+    </section>
+
+    <section id="adminBox" class="hidden">
+      <h2>Admin: Users</h2>
+      <input id="uId" type="hidden" />
+      <input id="uName" placeholder="name" />
+      <input id="uEmail" placeholder="email" />
+      <input id="uPassword" type="password" placeholder="password (leave empty to keep)" />
+      <select id="uRole"><option>user</option><option>admin</option></select>
+      <input id="uInterests" placeholder="interests, comma separated" />
+      <button onclick="saveUser()">Save user</button> <button onclick="clearUser()">Clear</button>
+      <div id="users"></div>
+      <button onclick="usersPage--; loadUsers()">Prev</button> <span id="usersInfo"></span>
+      <button onclick="usersPage++; loadUsers()">Next</button>
+
+      <h2>Admin: Everyone's Notes</h2>
+      <div id="allNotes"></div>
+
+      <h2>Admin: Users grouped by interest (aggregation)</h2>
+      <input id="interestFilter" placeholder="optional filter: chess,reading" />
+      <button onclick="loadInterests()">Load</button>
+      <div id="interests"></div>
+    </section>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
